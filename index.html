@@ -999,7 +999,7 @@ function renderEvent(slug){
   el("eventBody").innerHTML =
     '<div class="article-meta">RECENT EVENTS · OUR TAKE ON THE NEWS · '+e.date.toUpperCase()+'</div>'
     +'<h1 style="font-size:clamp(34px,4.6vw,52px);max-width:820px;margin-bottom:14px">'+e.title+'</h1>'
-    +'<p class="event-byline">By <strong>Karel Baloun</strong> — founder, Safer Together · Facebook\u2019s first senior software engineer · UC Berkeley Master of Information &amp; Cybersecurity</p>'
+    +'<p class="event-byline">By <strong>Karel Baloun</strong>'+(idx===0 ? ' — founder, Safer Together · Facebook\u2019s first senior software engineer · UC Berkeley Master of Information &amp; Cybersecurity' : '')+'</p>'
     +'<p class="lede" style="max-width:720px">'+e.summary+'</p>'
     +'<div class="prose">'+e.body
     +'<h2>Our take</h2>'+e.take
