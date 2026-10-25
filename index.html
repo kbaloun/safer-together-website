@@ -192,6 +192,11 @@ section.block.tight{padding:52px 0}
 .article-hero-img{border-radius:16px;overflow:hidden;margin:30px 0;border:1px solid var(--line)}
 .article-hero-img img{width:100%;aspect-ratio:16/7.5;object-fit:cover}
 
+/* Recent Events */
+.event-byline{font-size:14.5px;color:var(--muted);margin:0 0 22px;max-width:720px}
+.event-byline strong{color:var(--ink)}
+.prose .sources{font-size:14.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;margin-top:32px}
+
 /* About */
 .timeline{border-left:2px solid var(--line);margin-left:8px;padding-left:30px;display:grid;gap:30px}
 .tl-item{position:relative}
@@ -376,6 +381,7 @@ window.stTrack=function(ev){try{if(window.fbq)fbq('track','Lead');if(window.gtag
       <a href="#/services" data-nav data-page-link="services">Services</a>
       <a href="#/about" data-nav data-page-link="about">About</a>
       <a href="#/insights" data-nav data-page-link="insights">Insights</a>
+      <a href="#/recent-events" data-nav data-page-link="recent-events">Recent Events</a>
       <a href="#/contact" data-nav data-page-link="contact">Start a Conversation</a>
     </nav>
     <a class="head-cta" href="#/contact" data-nav>Book a fit call</a>
@@ -669,6 +675,34 @@ window.stTrack=function(ev){try{if(window.fbq)fbq('track','Lead');if(window.gtag
   </div>
 </div>
 
+<!-- ============ RECENT EVENTS INDEX ============ -->
+<div class="page" data-page="recent-events">
+  <div class="wrap">
+    <section class="block tight">
+      <p class="eyebrow">Recent Events · Our take on the news</p>
+      <h1 style="font-size:clamp(40px,5.4vw,62px);max-width:800px">The news, read closely.</h1>
+      <p class="lede" style="max-width:660px">Short analysis of the security stories that matter — what happened, what we make of it, and what to do about it. Facts from primary sources; the judgment is ours.</p>
+    </section>
+    <section class="block tight">
+      <div class="grid-2" id="allEvents"></div>
+    </section>
+    <div class="cta-band">
+      <div><h2>News is noise until it&rsquo;s ranked.</h2><p>A Baseline Sprint turns the week&rsquo;s headlines into your priorities, in the order your business should fix them.</p></div>
+      <a class="btn" href="#/contact" data-nav>Start a conversation</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RECENT EVENT POST ============ -->
+<div class="page" data-page="event">
+  <div class="wrap">
+    <section class="block tight">
+      <p class="eyebrow"><a href="#/recent-events" data-nav style="text-decoration:none">← All Recent Events</a></p>
+      <div id="eventBody"></div>
+    </section>
+  </div>
+</div>
+
 <!-- ============ CONTACT ============ -->
 <div class="page" data-page="contact">
   <div class="wrap">
@@ -760,6 +794,7 @@ window.stTrack=function(ev){try{if(window.fbq)fbq('track','Lead');if(window.gtag
         <li><a href="#/services" data-nav>Services</a></li>
         <li><a href="#/about" data-nav>About Karel</a></li>
         <li><a href="#/insights" data-nav>Insights</a></li>
+        <li><a href="#/recent-events" data-nav>Recent Events</a></li>
         <li><a href="#/contact" data-nav>Start a Conversation</a></li>
       </ul></div>
       <div><h4>SERVICES</h4><ul>
@@ -819,6 +854,50 @@ var ARTICLES = [
   +'<h2>Decision 3: Check the decisions AI touches</h2><p>Information risk isn\u2019t only about leaks. AI drafting a customer-facing answer, screening a résumé, or summarizing a contract can be wrong in fluent, confident prose. Decide in advance where a human must verify before anything leaves the building.</p><ul class="checklist"><li>Customer-facing content drafted by AI gets a human read before sending</li><li>Numbers, dates, and quotes from AI output get checked against the source</li><li>AI is never the final decision-maker on hiring, credit, pricing, or anything affecting a customer\u2019s money</li><li>Staff know: if AI output feels off, \u201Cthe tool said so\u201D is not a defense — the sender owns the send</li></ul>'
   +'<div class="callout"><p><strong>Ask your vendors three questions:</strong> Is our data used to train your models? How long do you retain what we enter? Can we turn AI features off — and what breaks if we do? A vendor who can\u2019t answer plainly is telling you something.</p></div>'
   +'<h2>Write the one-pager, then brief it</h2><p>One page: the approved tools, the three buckets with your examples, the verification rules, and who to ask when unsure. Then spend fifteen minutes walking the team through it — the briefing matters more than the document, because the real policy is what people remember at 4:45 p.m. on a busy Friday.</p><p>Revisit twice a year, or whenever a major tool changes. AI features are shipping into your existing software continuously; governance that assumes a fixed landscape will quietly expire — which is why this review maps to Govern, the function about keeping decisions current.</p><p><strong>The one-sentence version:</strong> don\u2019t try to control every tool — decide what information may go where, give people an approved way to get AI\u2019s benefits, and keep a human accountable for what leaves the building.</p>'}
+];
+
+var EVENTS = [
+ {slug:"ai-found-the-bugs-broken-ceremony-lost-the-keys", title:"AI found the bugs. A broken ceremony lost the keys.", meta:"PHP2Shell (CVE-2026-109618, CVE-2026-109619) was found by AI models; eMudhra lost its certificate-authority keys to a broken key-generation ceremony. Our take: exposure is now set by patch speed and audited basics.", summary:"Two stories, opposite halves of where security now stands: AI models found decade-old PHP flaws in about a week, while a certificate authority lost its keys to a mislabeled script — not an attack.", date:"October 24, 2026",
+  body:"<p>Two security stories landed in the same week of October 2026, and between them they describe the whole present condition of the field. One is about attackers getting faster — much faster, and with machines doing the work that used to require rare human talent. The other is about defenders failing at a task so basic it predates computers: generating a secret number properly, and checking that you did. Neither story is really about the technology named in its headline. Both are about process.</p>"
+  +"<h2>Part one: a decade of PHP, found by a model in a week</h2>"
+  +"<p>On Wednesday, October 21, the PHP project shipped emergency releases — versions 8.5.12, 8.4.27, 8.3.36 and 8.2.35 — fixing two vulnerabilities, CVE-2026-109618 and CVE-2026-109619, each rated CVSS 9.2 out of 10. To understand why that warranted emergency releases and, within a day, government websites going dark across five countries, it helps to know what PHP is and what these two bug types mean.</p>"
+  +"<p>PHP is the language that runs a very large share of the web’s server side — by the reporting around this incident, roughly 70% of websites, including WordPress, Drupal and Joomla, which between them power a substantial fraction of everything from small-business sites to government portals. When you load a page on such a site, a PHP interpreter — a program whose entire job is to execute PHP code safely — runs the site’s scripts. The two flaws are in that interpreter itself, and they are classic memory-safety failures of the two kinds that have haunted systems programming for decades.</p>"
+  +"<p>The first is a <em>use-after-free</em>: the interpreter allocates a block of memory for some data, later decides it is finished with that block and returns it to the pool for reuse — and then, through a flaw in its bookkeeping, uses the block again anyway. In the interval, an attacker who can influence what gets allocated next can place their own data in that exact block. The interpreter then treats attacker-supplied bytes as if they were its own trusted internal structures. The second is a <em>type confusion</em>: the interpreter keeps track of what kind of thing every value is — a number, a string, an object — and the flaw lets an attacker convince it that a value of one kind is actually of another, so it applies the wrong operations and the wrong trust assumptions to data it should never have trusted.</p>"
+  +"<p>Either class of bug, in an interpreter, can be escalated to remote code execution: the attacker, who has no account and no credentials — both flaws are described as unauthenticated — gets the server to run code of their choosing. And note the phrase in the disclosures that matters most: the execution happens <em>before application code runs</em>. This is not a bug in some plugin you can uninstall. It is a bug in the floor the application stands on. Every PHP application on a vulnerable version was exposed, whether or not a single line of its own code was wrong. On the reporting, the flaws had been present, in one form or another, in every PHP release for about a decade.</p>"
+  +"<p>The response tells you how seriously the people closest to it took the exposure. Government sites in Germany, France, Belgium, Finland and the Netherlands were taken offline as a precaution — governments do not darken public services over theoretical risks. South Korea raised its private-sector cybersecurity alert level on Thursday. Cloudflare, which sits in front of a large share of the web, had protective firewall rules live hours <em>before</em> the public disclosure, because it had already seen exploitation attempts beginning around October 17 — attackers were working these flaws before most defenders knew they existed. No widespread successful breach has been confirmed as of this writing, but the race shape is clear: in the modern pattern, the gap between “a flaw exists” and “a flaw is being exploited at scale” has collapsed to days, and sometimes the exploitation precedes the announcement.</p>"
+  +"<p>Then there is the half of the story that will matter longest: who found the bugs. One was discovered by the security firm Calif using GPT-5.6 Sol, a frontier AI model. Both were found by Wiz using its own model-based tooling. Wiz’s own comparison is to Heartbleed — the 2014 OpenSSL flaw that took the industry the better part of a year to fully understand and remediate — and its claim is that a single researcher working with frontier models did in about a week the vulnerability-research work that once took a team months. Treat vendor claims with the usual salt, but the direction is not in serious dispute, and this week it stopped being a prediction. The scarcest resource in offensive security for thirty years was people who could find deep memory flaws in widely deployed code. That scarcity is ending.</p>"
+  +"<h2>Part two: the keys that were almost no key at all</h2>"
+  +"<p>The second story is quieter and, in its way, worse. On Thursday, October 22, eMudhra, a certificate authority based in Bengaluru, India, announced that it will voluntarily withdraw from the global SSL/TLS certificate business. A certificate authority is one of the load-bearing institutions of the web’s trust system, so a short explanation of what failed is worthwhile.</p>"
+  +"<p>When your browser connects to a website over HTTPS, the site presents a certificate — a signed statement binding a public key to a domain name. Your browser trusts that statement because it was signed by a certificate authority it trusts, and that trust chains upward: a root CA, whose key is baked into your browser or operating system, signs <em>intermediate</em> CA certificates, and those intermediates issue the certificates websites actually use. An intermediate CA key is therefore an extraordinarily powerful object. Whoever holds one can mint certificates that every browser on earth will accept — for any domain, including a bank’s or a government’s — and the code-signing intermediates can vouch for software. Because the keys are so powerful, they are generated in <em>key ceremonies</em>: formal, scripted, witnessed procedures, usually involving hardware security modules, multiple custodians and extensive logging, designed so that no single person or error can compromise the result. The whole point of the ceremony is that key generation is the one moment where the system’s entire future trust is created — and where a mistake is undetectable later, because a weak key looks exactly like a strong one from the outside.</p>"
+  +"<p>A researcher found, on October 17, that eight of eMudhra’s intermediate CA keys — six for TLS, two for code signing — had been generated with almost no randomness at all. Every one of the eight keys was a number smaller than 256. One of them was the number 4. A proper RSA or elliptic-curve private key is an astronomically large, unpredictable number; these could be recovered by trying a handful of values — a child could enumerate them by hand. Google, Mozilla, Apple and Microsoft — the four parties whose root programs decide which CAs the world’s browsers trust — blocked the keys within days. India’s CERT-In issued an advisory on Wednesday.</p>"
+  +"<p>The company’s account of how it happened deserves attention, because it is a process failure of a very recognizable kind. In an April 2025 key-generation ceremony, the script used to generate the keys produced <em>two</em> sets: the intended, properly random set, and a second, weak set. Staff later used the weak set — the company says — because its labels resembled the labels on the correct set. Read that again: a look-alike label, and no step in the procedure that verified the keys themselves before they were put into service. The company states that its infrastructure was not breached, that none of the eight intermediates ever issued a customer certificate, and that about 30,000 customer certificates now have to migrate to a different root. Its shares fell 40% in two days. The residual risk sits with software that ships its own list of trusted CAs rather than using the browser or operating-system store, because that software may go on trusting what the browsers have already revoked.</p>",
+  take:"<p>Put the two stories side by side and a single picture forms. In the first, machines found, in days, decade-old flaws in code that runs most of the web, and other machines were exploiting similar flaws before the fixes were public. In the second, the most ritualized, high-assurance process in the industry — the one with scripts and witnesses and hardware modules — was undone by a mislabeled output and a missing verification step. The attackers’ constraint used to be talent. The defenders’ constraint was supposed to be rigor. This week, the talent constraint weakened and the rigor turned out to be partly theater.</p>"
+  +"<p>Two conclusions follow for anyone responsible for systems. First, patch windows are now measured against machine-speed discovery and machine-speed exploitation. A patching process designed for a world where a critical flaw bought you a comfortable month is a process designed for a world that ended this year; emergency patching has to be a rehearsed capability, not an improvisation, and it has to reach the forgotten systems — the test WordPress, the staging server — because those are the ones the scanners find first. Second, the failures that end companies are increasingly not exotic. Nobody broke eMudhra’s mathematics; the mathematics of a proper key is unforgiving and it works. What broke was everything around the mathematics: generation, labeling, verification, custody. The same is true in most organizations, at smaller stakes: secrets generated by a script nobody reviewed, backups whose restoration nobody has tested, a vendor whose own operational hygiene was taken on faith. Audit the boring parts. That is where the bodies are buried.</p>",
+  todo:"<ul><li><strong>If you run PHP anywhere — including a WordPress, Drupal or Joomla site — patch to the fixed versions now</strong>, and do not stop at the production site: staging, development and forgotten installs are the same interpreter with the same flaws. If you cannot patch immediately, put the site behind a web application firewall with current rules and treat the delay as a measured risk, in days.</li>"
+  +"<li><strong>Rehearse emergency patching.</strong> Decide in advance who can take a service down, who approves it, and how you will know it worked. The next PHP-class event will not leave time to invent the procedure.</li>"
+  +"<li><strong>Inventory your trust dependencies.</strong> Know which certificate authorities your certificates chain to, and whether any software you run pins its own CA bundle instead of the system store — that software is where distrusted keys keep working longest.</li>"
+  +"<li><strong>Ask your vendors the ceremony questions.</strong> How are keys and secrets generated in the products you depend on? By what procedure, with what verification that the output is what it claims to be, and what evidence could they show you? A vendor who cannot answer has told you something.</li>"
+  +"<li><strong>Apply the same question at home.</strong> Where your own systems generate keys, tokens or recovery secrets, there should be a step that <em>verifies the output</em>, not merely one that produces it. Generation without verification is how a key that is the number 4 gets into production.</li></ul>",
+  sources:"PHP release announcements (versions 8.5.12, 8.4.27, 8.3.36, 8.2.35); SecurityWeek, vendor responses to the PHP2Shell vulnerabilities; Reuters, “Indian firm eMudhra exits global digital certificates business”; CERT-In advisory, October 2026."},
+ {slug:"the-door-that-only-exists-when-the-service-is-down", title:"The door that only exists when the service is down", meta:"CVE-2026-110447 in Collabora’s built-in server exists only while the service is stopped; CVE-2026-114625 turns Arista’s VeloCloud Orchestrator into a master key. Our take: attackers work the transitions, and management-plane exposure goes first.", summary:"CISA’s latest additions break two assumptions: a Collabora flaw that only exists while the server is stopped, and an Arista orchestrator bug that turns one login into control of the whole SD-WAN estate.", date:"October 24, 2026",
+  body:"<p>On Thursday, October 23, the US Cybersecurity and Infrastructure Security Agency — CISA — added two vulnerabilities to its Known Exploited Vulnerabilities catalog. The KEV catalog is worth understanding before the two entries themselves, because what CISA puts on that list, and the deadline it attaches, is the closest thing the industry has to an official triage order. A flaw gets into the KEV only when CISA has evidence it is being actively exploited in the real world — not theoretically dangerous, not merely embarrassing, but in use. Federal civilian agencies are then legally required to remediate listed flaws by a stated deadline. Everyone else reads the list for the obvious reason: attackers have already voted on which vulnerabilities matter.</p>"
+  +"<p>Both of this week’s entries were confirmed exploited. Both are serious. And each one breaks a different assumption that defenders routinely make — one about <em>when</em> a system is exposed, and one about <em>where</em> the valuable target sits.</p>"
+  +"<h2>The first flaw: a fallback component, awake only on bad days</h2>"
+  +"<p>The first entry, CVE-2026-110447, is rated CVSS 9.2 and lives in Collabora Online’s built-in CODE Server app for Nextcloud. Some unpacking: Nextcloud is the widely used self-hosted alternative to Google Drive or SharePoint — organizations run it to keep files on their own infrastructure. Collabora Online is the office-suite component that lets users open and edit documents in the browser inside Nextcloud. For convenience, Collabora offers a “built-in” CODE server app: instead of running a separate, properly deployed document server, an administrator can enable a simplified one bundled as a Nextcloud app. It is, by design, the easy path — the fallback for deployments that have not set up the real thing.</p>"
+  +"<p>The vulnerability is an operating-system command injection, the plainest and most dangerous class of web flaw: the application takes input and passes it into a system command without properly separating the data from the instructions, so an attacker who crafts the right input stops being a user of the application and starts issuing commands to the server underneath it. No account is required — the flaw is unauthenticated. CISA’s listing followed reports of attackers using it to plant PHP webshells — small malicious scripts left on the server that give the attacker persistent remote control through an ordinary-looking web request — and to hunt for credential stores on the compromised machines, the usual second step from a foothold to an estate.</p>"
+  +"<p>But the detail that makes this flaw worth a case study is <em>when it is reachable</em>. The vulnerable path exists only while the built-in server is stopped — in the window after a restart, an upgrade or a crash, when the deployment has fallen back to the built-in component instead of the production document server. Consider what that means. The component an organization actually configured, hardened and monitors is not the component that gets attacked. The component that gets attacked is the substitute — the one that wakes up on the system’s worst day, in an unplanned state, quite possibly while the administrators’ attention is on whatever caused the restart in the first place. Nobody threat-models the fallback. Nobody dashboards it. It sits outside the normal configuration precisely because it is not supposed to be the normal configuration. Federal agencies have until Monday, October 26 — three days from listing — to remediate, which is CISA’s way of saying the exploitation is not hypothetical.</p>"
+  +"<h2>The second flaw: the orchestrator is the estate</h2>"
+  +"<p>The second entry, CVE-2026-114625, is an SQL injection in the on-premise version of Arista’s VeloCloud Orchestrator. Again, unpacking helps. VeloCloud is an SD-WAN product: it manages the network connections of organizations with many sites — branch offices, shops, depots — by centralizing control. Instead of configuring every site’s networking gear individually, administrators define policy once in the Orchestrator, and the Orchestrator pushes configuration out to every managed device in the estate. SQL injection is another classic flaw class: the application builds database queries in a way that lets input escape its intended place and rewrite the query’s logic. Here, the flaw lets <em>any authenticated user</em> — anyone with any login at all, the lowest rung of access — elevate to local superuser operator, the highest.</p>"
+  +"<p>There is no fallback subtlety in this one; the subtlety is in what the target <em>is</em>. An orchestrator is not one system among many. It is the management plane: the single point from which every device in the network can be reconfigured, re-routed or read. A compromise of an endpoint gives an attacker a machine. A compromise of the orchestrator gives an attacker the estate — every site’s traffic patterns, configurations and credentials, and the ability to change them everywhere at once, from the inside, through the channel the organization itself built for exactly that purpose. This is why experienced practitioners rank management-plane vulnerabilities above more spectacular bugs in ordinary applications: the blast radius is not the server the flaw lives on, it is everything the server manages.</p>",
+  take:"<p>The lesson of the Collabora flaw generalizes well beyond one Nextcloud app. Security reviews are drawn of systems in their intended state: running, configured, current. Attackers work the transitions — the restart, the upgrade, the crash recovery, the maintenance mode, the degraded fallback that exists so the service can limp along. Those states are systematically less examined than the steady state: they are entered rarely, often urgently, sometimes automatically, and configurations that hold in the main path quietly do not hold in them. Every organization has equivalents of the built-in server: the emergency console, the default credential that was supposed to be temporary, the old interface kept alive “just in case,” the recovery path engineered for availability and never reviewed for exposure. They are doors that only exist on bad days — which is to say, on the days attackers prefer.</p>"
+  +"<p>The lesson of the Arista flaw is about ordering. Most patching programs sort work by severity score, and severity scores are computed per-system, as if every server were equal. They are not. The management plane — orchestrators, controllers, hypervisor consoles, backup control servers, identity admin portals — is a different category of asset, because its compromise converts one flaw into total compromise. An authenticated privilege escalation in the orchestrator outranks an unauthenticated flaw in a leaf application, whatever the scores say, because the question that matters is not “how bad is the bug” but “what does the attacker own the morning after.”</p>"
+  +"<p>And a word about the catalog itself. This week CISA listed two flaws, both already exploited, one with a three-day deadline. Defenders who treat the KEV as their floor — patch what’s on it first, on its clock, and argue about everything else afterward — will have made the right call far more often than those working from headlines or raw severity scores. The attackers have a priority list. It is considerate of CISA to publish its mirror image.</p>",
+  todo:"<ul><li><strong>If you run Nextcloud with Collabora:</strong> upgrade the built-in CODE Server app or disable it, per the vendor’s guidance — and because the exposure window is a <em>stopped</em> server, do not stop there: if the service has restarted, upgraded or crashed recently, check the server for webshells and unexpected files before you call it clean. Remediation that ignores the window the flaw was open in is half a remediation.</li>"
+  +"<li><strong>If you run VeloCloud Orchestrator on-premise:</strong> patch, and audit the account list — who can authenticate to the orchestrator at all, from where, and whether every one of those accounts should exist. Treat any unexpected operator-level account as a potential compromise, not a clerical error.</li>"
+  +"<li><strong>Inventory your fallback components.</strong> Maintenance modes, built-in substitutes, recovery consoles, legacy interfaces, “temporary” access paths: list them, and ask of each the question nobody asked of the built-in server — what is this exposed as, on the day it wakes up?</li>"
+  +"<li><strong>Re-order patching by plane, not just by score.</strong> Management-plane systems — anything that configures, controls or administers other systems — get patched first, isolated hardest, and put behind the strictest authentication you have, including network-level restriction of who can even reach the login page.</li>"
+  +"<li><strong>Work the KEV as a standing obligation.</strong> Subscribe to the catalog, and when an entry matches anything in your estate, its deadline becomes your deadline — whether or not you are a federal agency. It is the one list in this field that is guaranteed to be about the real world.</li></ul>",
+  sources:"CISA Known Exploited Vulnerabilities catalog, entries added October 23, 2026 (CVE-2026-110447; CVE-2026-114625)."}
 ];
 
 var FAQS = {
@@ -904,6 +983,31 @@ function renderArticle(slug){
     +'<div class="callout" style="max-width:760px"><p><strong>Want this applied to your business?</strong> The Baseline Sprint turns these ideas into your ranked priorities and a 90-day roadmap. <a href="#/contact" data-nav>Start a conversation →</a></p></div>'
     +'<p style="margin-top:34px" class="mono"><span style="font-size:12px;color:var(--muted)">NEXT IN INSIGHTS → </span><a href="#/insights/'+next.slug+'" data-nav style="font-family:Spectral,serif;font-size:19px">'+next.title+'</a></p>';
   return a;
+}
+
+/* ---------- Render: recent events ---------- */
+function eventCard(e){
+  return '<article class="card"><div class="num">RECENT EVENTS · '+e.date.toUpperCase()+'</div><h3>'+e.title+'</h3><p>'+e.summary+'</p><a class="more" href="#/recent-events/'+e.slug+'" data-nav>Read our take →</a></article>';
+}
+function renderEvents(){
+  el("allEvents").innerHTML = EVENTS.map(eventCard).join("");
+}
+function renderEvent(slug){
+  var e = EVENTS.filter(function(x){return x.slug===slug;})[0] || EVENTS[0];
+  var idx = EVENTS.indexOf(e);
+  var next = EVENTS[(idx+1)%EVENTS.length];
+  el("eventBody").innerHTML =
+    '<div class="article-meta">RECENT EVENTS · OUR TAKE ON THE NEWS · '+e.date.toUpperCase()+'</div>'
+    +'<h1 style="font-size:clamp(34px,4.6vw,52px);max-width:820px;margin-bottom:14px">'+e.title+'</h1>'
+    +'<p class="event-byline">By <strong>Karel Baloun</strong> — founder, Safer Together · Facebook\u2019s first senior software engineer · UC Berkeley Master of Information &amp; Cybersecurity</p>'
+    +'<p class="lede" style="max-width:720px">'+e.summary+'</p>'
+    +'<div class="prose">'+e.body
+    +'<h2>Our take</h2>'+e.take
+    +'<h2>What everyone needs to do in response</h2>'+e.todo
+    +'<p class="sources"><em>Sources: '+e.sources+'</em></p></div>'
+    +'<div class="callout" style="max-width:760px"><p><strong>Want this kind of judgment applied to your business?</strong> The Baseline Sprint turns the headlines into your ranked priorities and a 90-day roadmap. <a href="#/contact" data-nav>Start a conversation →</a></p></div>'
+    +(EVENTS.length>1 ? '<p style="margin-top:34px" class="mono"><span style="font-size:12px;color:var(--muted)">MORE RECENT EVENTS → </span><a href="#/recent-events/'+next.slug+'" data-nav style="font-family:Spectral,serif;font-size:19px">'+next.title+'</a></p>' : '');
+  return e;
 }
 
 /* ---------- Render: FAQs ---------- */
@@ -1103,30 +1207,33 @@ var PAGE_SEO={
  services:{title:"Services — Baseline Sprint, 90-Day Program, Fractional Security Lead | Safer Together", desc:"Six advice-and-training services for small businesses: Security Baseline Sprint, 90-Day Security Program, Fractional Security Lead, Incident Readiness Workshop, Human Risk Defense, and AI Use Review — aligned to NIST CSF 2.0."},
  about:{title:"About Karel Baloun — Founder, Safer Together | Facebook\u2019s First Senior Engineer to Cybersecurity", desc:"Karel Baloun: Facebook\u2019s first senior software engineer, author of Inside Facebook, UC Berkeley Master of Information and Cybersecurity, founder of i2we and Sunnytize.me, CTO of UltraSignup — now relaunching Safer Together LLC."},
  insights:{title:"Insights — Cybersecurity Guides for Small-Business Owners | Safer Together", desc:"Plain-English guides: what a cybersecurity baseline covers, incident response plans vs tabletop exercises, and an AI-use information-risk checklist for small-business owners."},
+ "recent-events":{title:"Recent Events — Our Take on the News | Safer Together", desc:"Short news analysis from Safer Together: what happened, our take, and what to do — starting with PHP2Shell and eMudhra\u2019s broken key ceremony, and the Collabora and Arista flaws CISA flagged on October 23, 2026."},
  contact:{title:"Start a Conversation | Safer Together", desc:"Tell Safer Together about your business: company size, main concern, timing, and preferred next step. Advice and training for small businesses — preparation, not emergency response."}
 };
-function setSEO(page, article){
-  var s = article ? {title: article.title+" | Safer Together Insights", desc: article.meta} : PAGE_SEO[page];
+function setSEO(page, article, kind){
+  var s = article ? {title: article.title + (kind==="event" ? " | Safer Together — Recent Events" : " | Safer Together Insights"), desc: article.meta} : PAGE_SEO[page];
   document.title=s.title;
   var m=document.querySelector('meta[name="description"]'); if(m) m.setAttribute("content", s.desc);
   document.querySelectorAll("[data-page-link]").forEach(function(a){
     var p=a.getAttribute("data-page-link");
-    var current = (page==="article") ? "insights" : page;
+    var current = (page==="article") ? "insights" : (page==="event" ? "recent-events" : page);
     if(p===current) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
   });
 }
 function route(){
   var hash=location.hash.replace(/^#\/?/, "");
   var parts=hash.split("/").filter(Boolean);
-  var page="home", article=null;
+  var page="home", article=null, kind=null;
   if(parts.length===0) page="home";
   else if(parts[0]==="services") page="services";
   else if(parts[0]==="about") page="about";
   else if(parts[0]==="contact") page="contact";
   else if(parts[0]==="insights" && parts[1]){ page="article"; article=renderArticle(parts[1]); }
   else if(parts[0]==="insights") page="insights";
+  else if(parts[0]==="recent-events" && parts[1]){ page="event"; article=renderEvent(parts[1]); kind="event"; }
+  else if(parts[0]==="recent-events") page="recent-events";
   document.querySelectorAll(".page").forEach(function(p){ p.classList.toggle("active", p.dataset.page===page); });
-  setSEO(page, article);
+  setSEO(page, article, kind);
   window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
   window.scrollTo(0,0);
 }
@@ -1139,7 +1246,7 @@ function bindNav(root){
 window.addEventListener("hashchange", route);
 
 /* ---------- Init ---------- */
-renderCSF(); renderServices(); renderArticles(); renderFaqs(); renderCheck(); initForm(); initBooking(); bindNav(document); route();
+renderCSF(); renderServices(); renderArticles(); renderEvents(); renderFaqs(); renderCheck(); initForm(); initBooking(); bindNav(document); route();
 </script>
 </body>
 </html>
