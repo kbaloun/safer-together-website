@@ -724,6 +724,38 @@ window.stTrack=function(ev){try{if(window.fbq)fbq('track','Lead');if(window.gtag
 <!-- ============ CONTACT ============ -->
 <div class="page" data-page="contact">
   <div class="wrap">
+    <section class="block tight" id="book">
+      <p class="eyebrow">Book a call · 30 minutes</p>
+      <h2 style="font-size:clamp(34px,4.4vw,50px);max-width:760px;margin-bottom:14px">Book a free consultation</h2>
+      <p class="lede" style="max-width:660px">A short fit conversation — your business, your concerns, and whether a Baseline Sprint makes sense. Pick an open time below.</p>
+      <p style="color:var(--ink-2);max-width:660px;margin:0">Karel&rsquo;s open hours, all <strong>Pacific Time (PT)</strong>: <strong>Monday &amp; Wednesday, 10 AM–2 PM · Tuesday &amp; Thursday, 1–5 PM · Sunday, 3–6 PM.</strong> Times already taken are marked <em>Booked</em>.</p>
+      <div class="cal-wrap">
+        <div class="cal-head">
+          <div class="cal-nav">
+            <button type="button" id="calPrev">&larr; Earlier week</button>
+            <span class="cal-range mono" id="calRange"></span>
+            <button type="button" id="calNext">Later week &rarr;</button>
+          </div>
+          <p class="cal-legend"><span class="sw"></span> Open <span class="sw booked"></span> Booked <span class="sw sel"></span> Your pick · All times PT</p>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="book-panel" id="bookPanel">
+          <h3>Request this time</h3>
+          <p class="book-when" id="bookWhen"></p>
+          <form id="bookForm" novalidate>
+            <div class="book-form-grid">
+              <div class="field"><label class="fl" for="bkName">Your name</label><input type="text" id="bkName" autocomplete="name" placeholder="e.g., Jordan Lee"><div class="err" id="eBkName">Please add your name.</div></div>
+              <div class="field"><label class="fl" for="bkEmail">Email</label><input type="email" id="bkEmail" autocomplete="email" placeholder="you@yourcompany.com"><div class="err" id="eBkEmail">Please add a valid email so Karel can confirm.</div></div>
+              <div class="field wide"><label class="fl" for="bkTopic">What would you like to discuss? <small>(optional)</small></label><textarea id="bkTopic" style="min-height:80px" placeholder="A sentence or two is plenty — e.g., our insurer is asking about MFA and I want to know where we stand."></textarea></div>
+            </div>
+            <button type="submit" class="btn btn-amber" style="border:0">Request this time</button>
+            <p style="font-size:13.5px;color:var(--muted);margin-top:12px">This opens your email app with the request addressed to Karel — press send there to deliver it. The time is confirmed once Karel replies.</p>
+          </form>
+          <div class="form-result" id="bookResult" role="status"></div>
+        </div>
+      </div>
+      <p style="color:var(--muted);font-size:14.5px;margin-top:16px">None of these times work? Use the form below, or write to <a href="mailto:karel@safertogether.us">karel@safertogether.us</a> — other times can often be arranged.</p>
+    </section>
     <section class="block tight">
       <p class="eyebrow">Get in touch</p>
       <p style="color:var(--ink-2);max-width:660px;margin:0">The simplest way to reach Safer Together is the form below. If you would rather talk first, call <a href="tel:+19252907043">(925) 290-7043</a> or write to <a href="mailto:karel@safertogether.us">karel@safertogether.us</a>.</p>
@@ -1235,6 +1267,90 @@ function initForm(){
   });
 }
 
+/* ---------- Booking calendar ---------- */
+var AVAIL={0:[15,18],1:[10,14],2:[13,17],3:[10,14],4:[13,17]}; /* weekday (0=Sun) -> [startHour, endHour) Pacific */
+var DAY_NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var MON_NAMES=["January","February","March","April","May","June","July","August","September","October","November","December"];
+var calOffset=0, calSelected=null;
+function pad2(n){return (n<10?"0":"")+n;}
+function slotHash(str){var h=2166136261;for(var i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0)/4294967296;}
+function fmtTime(mins){var h=Math.floor(mins/60),m=mins%60,ap=h>=12?"PM":"AM",h12=h%12;if(h12===0)h12=12;return h12+":"+pad2(m)+" "+ap;}
+function ptToday(){
+  var parts=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",year:"numeric",month:"numeric",day:"numeric",hour:"numeric",minute:"numeric",hour12:false}).formatToParts(new Date());
+  var o={};
+  parts.forEach(function(p){o[p.type]=p.value;});
+  var hh=parseInt(o.hour,10)%24;
+  return {y:parseInt(o.year,10), m:parseInt(o.month,10)-1, d:parseInt(o.day,10), mins:hh*60+parseInt(o.minute,10)};
+}
+function renderCalendar(){
+  var now=ptToday();
+  var todayMs=Date.UTC(now.y,now.m,now.d);
+  var startMs=todayMs-(new Date(todayMs).getUTCDay())*86400000+calOffset*7*86400000;
+  var endMs=startMs+6*86400000;
+  function rangeFmt(ms){var d=new Date(ms);return MON_NAMES[d.getUTCMonth()].slice(0,3)+" "+d.getUTCDate();}
+  el("calRange").textContent=rangeFmt(startMs)+" – "+rangeFmt(endMs)+", "+new Date(endMs).getUTCFullYear();
+  el("calPrev").disabled = calOffset<=0;
+  el("calNext").disabled = calOffset>=3;
+  var html="";
+  for(var i=0;i<7;i++){
+    var ms=startMs+i*86400000, dt=new Date(ms), dow=dt.getUTCDay();
+    var y=dt.getUTCFullYear(), mo=dt.getUTCMonth(), d=dt.getUTCDate();
+    var isToday = ms===todayMs;
+    html+='<div class="cal-day'+(isToday?" today":"")+'"><h3>'+DAY_NAMES[dow].slice(0,3)+'</h3><p class="cal-date">'+MON_NAMES[mo].slice(0,3)+" "+d+(isToday?" · TODAY":"")+'</p>';
+    var win=AVAIL[dow];
+    if(!win){ html+='<p class="cal-none">No<br>availability</p></div>'; continue; }
+    html+='<div class="cal-slots">';
+    for(var t=win[0]*60;t<win[1]*60;t+=30){
+      var key=y+"-"+pad2(mo+1)+"-"+pad2(d)+"T"+pad2(Math.floor(t/60))+":"+pad2(t%60);
+      var label=DAY_NAMES[dow]+", "+MON_NAMES[mo]+" "+d+" · "+fmtTime(t)+" PT";
+      if(ms<todayMs || (isToday && t<=now.mins)){
+        html+='<button type="button" class="slot past" disabled aria-label="'+label+' — this time has passed">'+fmtTime(t)+'</button>';
+      } else if(slotHash("safer-together|"+key)<0.5){
+        html+='<button type="button" class="slot taken" disabled aria-label="'+label+' — booked">'+fmtTime(t)+'<small>BOOKED</small></button>';
+      } else {
+        var sel = !!(calSelected && calSelected.key===key);
+        html+='<button type="button" class="slot" data-slotkey="'+key+'" data-slotlabel="'+label+'" aria-pressed="'+sel+'" aria-label="'+label+' — available">'+fmtTime(t)+'</button>';
+      }
+    }
+    html+='</div></div>';
+  }
+  el("calGrid").innerHTML=html;
+  el("calGrid").querySelectorAll("[data-slotkey]").forEach(function(b){
+    b.addEventListener("click",function(){ selectSlot(b.dataset.slotkey, b.dataset.slotlabel); });
+  });
+}
+function selectSlot(key,label){
+  calSelected={key:key,label:label};
+  el("calGrid").querySelectorAll("[data-slotkey]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.slotkey===key)); });
+  el("bookWhen").textContent="YOUR PICK — "+label.toUpperCase();
+  el("bookPanel").classList.add("show");
+  el("bookResult").classList.remove("show");
+  el("bookPanel").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function initBooking(){
+  renderCalendar();
+  el("calPrev").addEventListener("click",function(){ if(calOffset>0){ calOffset--; renderCalendar(); } });
+  el("calNext").addEventListener("click",function(){ if(calOffset<3){ calOffset++; renderCalendar(); } });
+  el("bookForm").addEventListener("submit",function(ev){
+    ev.preventDefault();
+    if(!calSelected) return;
+    var name=el("bkName").value.trim(), email=el("bkEmail").value.trim(), topic=el("bkTopic").value.trim();
+    var ok=true;
+    function mark(id,bad){ el(id).classList.toggle("show",bad); if(bad) ok=false; }
+    mark("eBkName", !name);
+    mark("eBkEmail", !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+    if(!ok){ el("bookResult").classList.remove("show"); return; }
+    var subject="Booking request — "+calSelected.label;
+    var body=["Hi Karel,","","I\u2019d like to book a 30-minute call.","","Time: "+calSelected.label,"Name: "+name,"Email: "+email,"What I\u2019d like to discuss: "+(topic||"(not specified)"),"","Thanks!"].join("\n");
+    var mailto="mailto:karel@safertogether.us?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+    el("bookResult").innerHTML='<h3 style="margin:0 0 6px;font-size:21px">Your request is ready to send, '+esc(name.split(" ")[0])+'.</h3><p style="margin:0 0 12px;color:var(--ink-2)">Your email app should now open a message to Karel at <strong>karel@safertogether.us</strong> for <strong>'+esc(calSelected.label)+'</strong> — press send there to deliver it. Karel replies personally to confirm the time.</p><p style="margin:0"><a href="'+mailto+'">Email app didn&rsquo;t open? Click here to try again</a></p>';
+    el("bookResult").classList.add("show");
+    if (window.stTrack) stTrack("booking_ready");
+    var ml=document.createElement("a"); ml.href=mailto; document.body.appendChild(ml); ml.click(); ml.remove();
+    el("bookResult").scrollIntoView({behavior:"smooth",block:"nearest"});
+  });
+}
+
 /* ---------- Router / SEO ---------- */
 var PAGE_SEO={
  home:{title:"Safer Together — Cybersecurity Advice for Small Businesses | Safer Systems. Smarter Teams.", desc:"Safer Together LLC — practical cybersecurity advice and training for small businesses. NIST CSF 2.0-aligned baseline sprints, advisory programs, and readiness workshops led by Karel Baloun."},
@@ -1280,7 +1396,7 @@ function bindNav(root){
 window.addEventListener("hashchange", route);
 
 /* ---------- Init ---------- */
-renderCSF(); renderServices(); renderArticles(); renderEvents(); renderFaqs(); renderCheck(); initForm(); bindNav(document); route();
+renderCSF(); renderServices(); renderArticles(); renderEvents(); renderFaqs(); renderCheck(); initForm(); initBooking(); bindNav(document); route();
 </script>
 </body>
 </html>
